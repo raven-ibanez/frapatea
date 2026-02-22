@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trash2, Plus, Minus, ArrowLeft } from 'lucide-react';
+import { Trash2, Plus, Minus, ArrowLeft, ShoppingBag } from 'lucide-react';
 import { CartItem } from '../types';
 
 interface CartProps {
@@ -19,91 +19,98 @@ const Cart: React.FC<CartProps> = ({
   clearCart,
   getTotalPrice,
   onContinueShopping,
-  onCheckout
+  onCheckout,
 }) => {
   if (cartItems.length === 0) {
     return (
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <div className="text-center py-16">
-          <div className="text-6xl mb-4">☕</div>
-          <h2 className="text-2xl font-playfair font-medium text-black mb-2">Your cart is empty</h2>
-          <p className="text-gray-600 mb-6">Add some delicious items to get started!</p>
-          <button
-            onClick={onContinueShopping}
-            className="bg-red-600 text-white px-6 py-3 rounded-full hover:bg-red-700 transition-all duration-200"
-          >
-            Browse Menu
-          </button>
+      <div className="max-w-2xl mx-auto px-4 py-20 text-center">
+        <div className="w-24 h-24 bg-frapatea-surface border border-frapatea-border rounded-full flex items-center justify-center mx-auto mb-6">
+          <ShoppingBag className="h-10 w-10 text-frapatea-muted" />
         </div>
+        <h2 className="text-2xl font-outfit font-bold text-white mb-2">Your cart is empty</h2>
+        <p className="text-frapatea-muted font-inter mb-8">Add some delicious items to get started!</p>
+        <button
+          onClick={onContinueShopping}
+          className="btn-pink px-8 py-3.5 rounded-full font-outfit font-semibold shadow-pink"
+        >
+          🧋 Browse Menu
+        </button>
       </div>
     );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
+    <div className="max-w-3xl mx-auto px-4 py-8">
+      {/* Header row */}
       <div className="flex items-center justify-between mb-8">
         <button
           onClick={onContinueShopping}
-          className="flex items-center space-x-2 text-gray-600 hover:text-black transition-colors duration-200"
+          className="flex items-center gap-2 text-frapatea-muted hover:text-frapatea-pink transition-colors font-inter text-sm"
         >
-          <ArrowLeft className="h-5 w-5" />
+          <ArrowLeft className="h-4 w-4" />
           <span>Continue Shopping</span>
         </button>
-        <h1 className="text-3xl font-playfair font-semibold text-black">Your Cart</h1>
-        <h1 className="text-3xl font-noto font-semibold text-black">Your Cart</h1>
+        <h1 className="text-2xl font-outfit font-bold text-white">Your Cart</h1>
         <button
           onClick={clearCart}
-          className="text-red-500 hover:text-red-600 transition-colors duration-200"
+          className="text-sm text-frapatea-muted hover:text-frapatea-pink transition-colors font-inter"
         >
           Clear All
         </button>
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm overflow-hidden mb-8">
+      {/* Cart items */}
+      <div className="bg-frapatea-card border border-frapatea-border rounded-2xl overflow-hidden mb-6">
         {cartItems.map((item, index) => (
-          <div key={item.id} className={`p-6 ${index !== cartItems.length - 1 ? 'border-b border-cream-200' : ''}`}>
-            <div className="flex items-center justify-between">
-              <div className="flex-1">
-                <h3 className="text-lg font-noto font-medium text-black mb-1">{item.name}</h3>
+          <div
+            key={item.id}
+            className={`p-5 ${index !== cartItems.length - 1 ? 'border-b border-frapatea-border' : ''}`}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex-1 min-w-0">
+                <h3 className="text-base font-outfit font-semibold text-white truncate">{item.name}</h3>
                 {item.selectedVariation && (
-                  <p className="text-sm text-gray-500 mb-1">Size: {item.selectedVariation.name}</p>
+                  <p className="text-xs text-frapatea-muted mt-0.5">
+                    Size: <span className="text-frapatea-pink-light">{item.selectedVariation.name}</span>
+                  </p>
                 )}
                 {item.selectedAddOns && item.selectedAddOns.length > 0 && (
-                  <p className="text-sm text-gray-500 mb-1">
-                    Add-ons: {item.selectedAddOns.map(addOn => 
-                      addOn.quantity && addOn.quantity > 1 
-                        ? `${addOn.name} x${addOn.quantity}`
-                        : addOn.name
+                  <p className="text-xs text-frapatea-muted mt-0.5">
+                    Add-ons: {item.selectedAddOns.map(a =>
+                      a.quantity && a.quantity > 1 ? `${a.name} x${a.quantity}` : a.name
                     ).join(', ')}
                   </p>
                 )}
-                <p className="text-lg font-semibold text-black">₱{item.totalPrice} each</p>
+                <p className="text-sm font-outfit font-semibold text-frapatea-pink mt-1">
+                  ₱{item.totalPrice} each
+                </p>
               </div>
-              
-              <div className="flex items-center space-x-4 ml-4">
-                <div className="flex items-center space-x-3 bg-yellow-100 rounded-full p-1">
+
+              <div className="flex items-center gap-3 flex-shrink-0">
+                {/* Qty controls */}
+                <div className="flex items-center gap-2 bg-frapatea-surface border border-frapatea-pink/30 rounded-full px-1 py-1">
                   <button
                     onClick={() => updateQuantity(item.id, item.quantity - 1)}
-                    className="p-2 hover:bg-yellow-200 rounded-full transition-colors duration-200"
+                    className="p-1.5 hover:bg-frapatea-pink/20 rounded-full transition-colors"
                   >
-                    <Minus className="h-4 w-4" />
+                    <Minus className="h-3.5 w-3.5 text-frapatea-pink" />
                   </button>
-                  <span className="font-semibold text-black min-w-[32px] text-center">{item.quantity}</span>
+                  <span className="font-bold text-white min-w-[20px] text-center text-sm">{item.quantity}</span>
                   <button
                     onClick={() => updateQuantity(item.id, item.quantity + 1)}
-                    className="p-2 hover:bg-yellow-200 rounded-full transition-colors duration-200"
+                    className="p-1.5 hover:bg-frapatea-pink/20 rounded-full transition-colors"
                   >
-                    <Plus className="h-4 w-4" />
+                    <Plus className="h-3.5 w-3.5 text-frapatea-pink" />
                   </button>
                 </div>
-                
-                <div className="text-right">
-                  <p className="text-lg font-semibold text-black">₱{item.totalPrice * item.quantity}</p>
-                </div>
-                
+
+                <p className="text-base font-outfit font-bold text-white min-w-[60px] text-right">
+                  ₱{item.totalPrice * item.quantity}
+                </p>
+
                 <button
                   onClick={() => removeFromCart(item.id)}
-                  className="p-2 text-red-500 hover:text-red-600 hover:bg-red-50 rounded-full transition-all duration-200"
+                  className="p-2 text-frapatea-muted hover:text-frapatea-pink hover:bg-frapatea-pink/10 rounded-full transition-all"
                 >
                   <Trash2 className="h-4 w-4" />
                 </button>
@@ -113,17 +120,26 @@ const Cart: React.FC<CartProps> = ({
         ))}
       </div>
 
-      <div className="bg-white rounded-xl shadow-sm p-6">
-        <div className="flex items-center justify-between text-2xl font-noto font-semibold text-black mb-6">
-          <span>Total:</span>
-          <span>₱{parseFloat(getTotalPrice() || 0).toFixed(2)}</span>
+      {/* Summary */}
+      <div className="bg-frapatea-card border border-frapatea-border rounded-2xl p-6">
+        {/* Subtotal row */}
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-frapatea-muted font-inter text-sm">Subtotal</span>
+          <span className="text-white font-outfit font-semibold">₱{parseFloat(String(getTotalPrice() || 0)).toFixed(2)}</span>
         </div>
-        
+        <div className="border-t border-frapatea-border my-4" />
+        <div className="flex items-center justify-between mb-6">
+          <span className="text-xl font-outfit font-bold text-white">Total</span>
+          <span className="text-2xl font-outfit font-bold text-frapatea-pink">
+            ₱{parseFloat(String(getTotalPrice() || 0)).toFixed(2)}
+          </span>
+        </div>
+
         <button
           onClick={onCheckout}
-          className="w-full bg-red-600 text-white py-4 rounded-xl hover:bg-red-700 transition-all duration-200 transform hover:scale-[1.02] font-medium text-lg"
+          className="w-full btn-pink py-4 rounded-xl font-outfit font-bold text-base shadow-pink-lg hover:shadow-pink transition-all"
         >
-          Proceed to Checkout
+          Proceed to Checkout →
         </button>
       </div>
     </div>

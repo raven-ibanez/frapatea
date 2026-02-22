@@ -1,38 +1,122 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Ramen Yard Custom Styles */
-/* Minimal helpers for ramen palette when needed outside tailwind tokens */
-.bg-ramen-cream { background-color: #FFF3E0; }
-.bg-ramen-beige { background-color: #F7E7CE; }
-.text-ramen-red { color: #D7263D; }
-.text-ramen-dark { color: #0B0A0A; }
-.border-ramen-sesame { border-color: #D1C7B7; }
-.ring-ramen-gold { --tw-ring-color: #E0A106; }
+/* ============================================================
+   FRAPATEA — Global Base Styles
+   Theme: Dark Black + Hot Pink (#FF3D8A)
+   ============================================================ */
 
-/* Hide scrollbar for mobile nav */
+:root {
+  --pink:        #FF3D8A;
+  --pink-light:  #FF6FAA;
+  --pink-dark:   #CC2A6E;
+  --pink-glow:   rgba(255, 61, 138, 0.3);
+  --black:       #0A0A0A;
+  --dark:        #111111;
+  --card:        #1A1A1A;
+  --surface:     #222222;
+  --border:      #2E2E2E;
+  --muted:       #A0A0A0;
+  --white:       #FFFFFF;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--black);
+  color: var(--white);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Scrollbar ────────────────────────── */
 .scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
 
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
+/* Thin pink scrollbar for modals */
+.scrollbar-thin::-webkit-scrollbar { width: 4px; }
+.scrollbar-thin::-webkit-scrollbar-track { background: #1A1A1A; }
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: var(--pink-dark);
+  border-radius: 2px;
 }
 
-/* Image loading optimization */
+/* ── Pink Glow Utilities ─────────────── */
+.glow-pink {
+  box-shadow: 0 0 20px var(--pink-glow), 0 4px 16px rgba(0,0,0,0.5);
+}
+.glow-pink-lg {
+  box-shadow: 0 0 40px rgba(255,61,138,0.5), 0 8px 32px rgba(0,0,0,0.6);
+}
+
+/* ── Gradient Text ──────────────────── */
+.text-gradient-pink {
+  background: linear-gradient(135deg, var(--pink), var(--pink-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Pink Buttons ───────────────────── */
+.btn-pink {
+  background: linear-gradient(135deg, var(--pink) 0%, var(--pink-dark) 100%);
+  color: #fff;
+  border: none;
+  transition: all 0.2s ease;
+}
+.btn-pink:hover {
+  background: linear-gradient(135deg, var(--pink-light) 0%, var(--pink) 100%);
+  box-shadow: 0 6px 24px rgba(255,61,138,0.45);
+  transform: translateY(-1px) scale(1.02);
+}
+
+/* ── Card Surfaces ──────────────────── */
+.card-dark {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+}
+.card-dark:hover {
+  border-color: rgba(255,61,138,0.4);
+  box-shadow: 0 4px 20px rgba(255,61,138,0.15);
+}
+
+/* ── Category Pills ─────────────────── */
+.pill-active {
+  background: linear-gradient(135deg, var(--pink), var(--pink-dark));
+  color: #fff;
+  box-shadow: 0 3px 12px rgba(255,61,138,0.4);
+}
+.pill-inactive {
+  background: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--border);
+}
+.pill-inactive:hover {
+  border-color: var(--pink);
+  color: var(--pink-light);
+}
+
+/* ── Image rendering ─────────────────── */
 img {
   image-rendering: -webkit-optimize-contrast;
   image-rendering: crisp-edges;
 }
 
-/* Preload critical images */
-.preload-image {
-  content: '';
-  position: absolute;
-  left: -9999px;
-  top: -9999px;
-  width: 1px;
-  height: 1px;
+/* ── Pink Radio ─────────────────────── */
+input[type="radio"] {
+  accent-color: var(--pink);
 }
