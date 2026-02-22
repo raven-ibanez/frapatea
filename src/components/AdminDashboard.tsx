@@ -251,35 +251,35 @@ const AdminDashboard: React.FC = () => {
   // Login Screen
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-100 flex items-center justify-center">
         <div className="bg-white rounded-xl shadow-lg p-8 w-full max-w-md">
           <div className="text-center mb-8">
-            <div className="mx-auto w-16 h-16 bg-green-600 rounded-full flex items-center justify-center mb-4">
+            <div className="mx-auto w-16 h-16 bg-frapatea-pink rounded-full flex items-center justify-center mb-4">
               <Lock className="h-8 w-8 text-white" />
             </div>
-            <h1 className="text-2xl font-playfair font-semibold text-black">Admin Access</h1>
+            <h1 className="text-2xl font-playfair font-semibold text-gray-900">Admin Access</h1>
             <p className="text-gray-600 mt-2">Enter password to access the admin dashboard</p>
           </div>
 
           <form onSubmit={handleLogin}>
             <div className="mb-6">
-              <label className="block text-sm font-medium text-black mb-2">Password</label>
+              <label className="block text-sm font-medium text-gray-800 mb-2">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-frapatea-pink focus:border-transparent text-gray-900"
                 placeholder="Enter admin password"
                 required
               />
               {loginError && (
-                <p className="text-red-500 text-sm mt-2">{loginError}</p>
+                <p className="text-red-600 text-sm mt-2 font-medium">{loginError}</p>
               )}
             </div>
 
             <button
               type="submit"
-              className="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700 transition-colors duration-200 font-medium"
+              className="w-full bg-frapatea-pink text-white py-3 rounded-lg hover:bg-frapatea-pink-dark transition-colors duration-200 font-medium"
             >
               Access Dashboard
             </button>
@@ -348,7 +348,7 @@ const AdminDashboard: React.FC = () => {
                   type="text"
                   value={formData.name || ''}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-gray-900 bg-white"
                   placeholder="Enter item name"
                 />
               </div>
@@ -359,7 +359,7 @@ const AdminDashboard: React.FC = () => {
                   type="number"
                   value={formData.basePrice || ''}
                   onChange={(e) => setFormData({ ...formData, basePrice: Number(e.target.value) })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-gray-900 bg-white"
                   placeholder="0"
                 />
               </div>
@@ -369,7 +369,7 @@ const AdminDashboard: React.FC = () => {
                 <select
                   value={formData.category || ''}
                   onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-gray-900 bg-white"
                 >
                   {categories.map(cat => (
                     <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -412,7 +412,7 @@ const AdminDashboard: React.FC = () => {
                     type="number"
                     value={formData.discountPrice || ''}
                     onChange={(e) => setFormData({ ...formData, discountPrice: Number(e.target.value) || undefined })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-gray-900 bg-white"
                     placeholder="Enter discount price"
                   />
                 </div>
@@ -435,7 +435,7 @@ const AdminDashboard: React.FC = () => {
                     type="datetime-local"
                     value={formData.discountStartDate || ''}
                     onChange={(e) => setFormData({ ...formData, discountStartDate: e.target.value || undefined })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-gray-900 bg-white"
                   />
                 </div>
 
@@ -445,7 +445,7 @@ const AdminDashboard: React.FC = () => {
                     type="datetime-local"
                     value={formData.discountEndDate || ''}
                     onChange={(e) => setFormData({ ...formData, discountEndDate: e.target.value || undefined })}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:border-transparent text-gray-900 bg-white"
                   />
                 </div>
               </div>
@@ -459,7 +459,7 @@ const AdminDashboard: React.FC = () => {
               <textarea
                 value={formData.description || ''}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 bg-white"
                 placeholder="Enter item description"
                 rows={3}
               />
@@ -478,7 +478,7 @@ const AdminDashboard: React.FC = () => {
                 <h3 className="text-lg font-playfair font-medium text-black">Size Variations</h3>
                 <button
                   onClick={addVariation}
-                  className="flex items-center space-x-2 px-3 py-2 bg-cream-100 text-black rounded-lg hover:bg-cream-200 transition-colors duration-200"
+                  className="flex items-center space-x-2 px-3 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors duration-200"
                 >
                   <Plus className="h-4 w-4" />
                   <span>Add Variation</span>
@@ -491,14 +491,14 @@ const AdminDashboard: React.FC = () => {
                     type="text"
                     value={variation.name}
                     onChange={(e) => updateVariation(index, 'name', e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 bg-white"
                     placeholder="Variation name (e.g., Small, Medium, Large)"
                   />
                   <input
                     type="number"
                     value={variation.price}
                     onChange={(e) => updateVariation(index, 'price', Number(e.target.value))}
-                    className="w-24 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-24 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 bg-white"
                     placeholder="Price"
                   />
                   <button
@@ -517,7 +517,7 @@ const AdminDashboard: React.FC = () => {
                 <h3 className="text-lg font-playfair font-medium text-black">Add-ons</h3>
                 <button
                   onClick={addAddOn}
-                  className="flex items-center space-x-2 px-3 py-2 bg-cream-100 text-black rounded-lg hover:bg-cream-200 transition-colors duration-200"
+                  className="flex items-center space-x-2 px-3 py-2 bg-gray-200 text-gray-800 rounded-lg hover:bg-gray-300 transition-colors duration-200"
                 >
                   <Plus className="h-4 w-4" />
                   <span>Add Add-on</span>
@@ -530,13 +530,13 @@ const AdminDashboard: React.FC = () => {
                     type="text"
                     value={addOn.name}
                     onChange={(e) => updateAddOn(index, 'name', e.target.value)}
-                    className="flex-1 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="flex-1 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 bg-white"
                     placeholder="Add-on name"
                   />
                   <select
                     value={addOn.category}
                     onChange={(e) => updateAddOn(index, 'category', e.target.value)}
-                    className="px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 bg-white"
                   >
                     {addOnCategories.map(cat => (
                       <option key={cat.id} value={cat.id}>{cat.name}</option>
@@ -546,7 +546,7 @@ const AdminDashboard: React.FC = () => {
                     type="number"
                     value={addOn.price}
                     onChange={(e) => updateAddOn(index, 'price', Number(e.target.value))}
-                    className="w-24 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-24 px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-green-500 focus:border-transparent text-gray-900 bg-white"
                     placeholder="Price"
                   />
                   <button
@@ -774,14 +774,14 @@ const AdminDashboard: React.FC = () => {
                           <button
                             onClick={() => handleEditItem(item)}
                             disabled={isProcessing}
-                            className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors duration-200"
+                            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded transition-colors duration-200"
                           >
                             <Edit className="h-4 w-4" />
                           </button>
                           <button
                             onClick={() => handleDeleteItem(item.id)}
                             disabled={isProcessing}
-                            className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors duration-200"
+                            className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors duration-200"
                           >
                             <Trash2 className="h-4 w-4" />
                           </button>
@@ -811,14 +811,14 @@ const AdminDashboard: React.FC = () => {
                       <button
                         onClick={() => handleEditItem(item)}
                         disabled={isProcessing}
-                        className="p-2 text-gray-400 hover:text-gray-600 hover:bg-gray-100 rounded transition-colors duration-200"
+                        className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded transition-colors duration-200"
                       >
                         <Edit className="h-4 w-4" />
                       </button>
                       <button
                         onClick={() => handleDeleteItem(item.id)}
                         disabled={isProcessing}
-                        className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded transition-colors duration-200"
+                        className="p-2 text-red-500 hover:text-red-700 hover:bg-red-50 rounded transition-colors duration-200"
                       >
                         <Trash2 className="h-4 w-4" />
                       </button>
@@ -981,7 +981,7 @@ const AdminDashboard: React.FC = () => {
 
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center">
-              <div className="p-2 bg-cream-500 rounded-lg">
+              <div className="p-2 bg-frapatea-pink rounded-lg">
                 <Coffee className="h-6 w-6 text-white" />
               </div>
               <div className="ml-4">
