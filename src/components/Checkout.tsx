@@ -7,13 +7,14 @@ interface CheckoutProps {
   cartItems: CartItem[];
   totalPrice: number;
   onBack: () => void;
+  isOpen: boolean;
 }
 
 // Reusable dark input class
 const inputCls = 'w-full px-4 py-3 bg-frapatea-surface border border-frapatea-border rounded-xl text-white placeholder-frapatea-subtle focus:ring-2 focus:ring-frapatea-pink focus:border-frapatea-pink outline-none transition-all duration-200 font-inter text-sm';
 const labelCls = 'block text-sm font-inter font-medium text-frapatea-muted mb-2';
 
-const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack }) => {
+const Checkout: React.FC<CheckoutProps> = ({ cartItems, totalPrice, onBack, isOpen }) => {
   const { paymentMethods } = usePaymentMethods();
   const [step, setStep] = useState<'details' | 'payment'>('details');
   const [customerName, setCustomerName] = useState('');
@@ -377,10 +378,19 @@ Thank you for choosing Frapatea! 🧋
 
           <button
             onClick={handlePlaceOrder}
-            className="w-full btn-pink py-4 rounded-xl font-outfit font-bold text-base shadow-pink-lg"
+            disabled={!isOpen}
+            className={`w-full py-4 rounded-xl font-outfit font-bold text-base transition-all ${isOpen
+                ? 'btn-pink shadow-pink-lg'
+                : 'bg-frapatea-surface text-frapatea-subtle cursor-not-allowed border border-frapatea-border'
+              }`}
           >
-            🧋 Place Order via Messenger
+            {isOpen ? '🧋 Place Order via Messenger' : 'Store Currently Closed'}
           </button>
+          {!isOpen && (
+            <p className="text-xs text-frapatea-pink text-center mt-3 font-inter font-medium">
+              We are currently closed and not accepting orders.
+            </p>
+          )}
           <p className="text-xs text-frapatea-subtle text-center mt-3 font-inter">
             You'll be redirected to Messenger. Don't forget to attach your payment screenshot!
           </p>

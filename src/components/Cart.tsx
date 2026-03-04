@@ -10,6 +10,7 @@ interface CartProps {
   getTotalPrice: () => number;
   onContinueShopping: () => void;
   onCheckout: () => void;
+  isOpen: boolean;
 }
 
 const Cart: React.FC<CartProps> = ({
@@ -20,6 +21,7 @@ const Cart: React.FC<CartProps> = ({
   getTotalPrice,
   onContinueShopping,
   onCheckout,
+  isOpen,
 }) => {
   if (cartItems.length === 0) {
     return (
@@ -137,10 +139,19 @@ const Cart: React.FC<CartProps> = ({
 
         <button
           onClick={onCheckout}
-          className="w-full btn-pink py-4 rounded-xl font-outfit font-bold text-base shadow-pink-lg hover:shadow-pink transition-all"
+          disabled={!isOpen}
+          className={`w-full py-4 rounded-xl font-outfit font-bold text-base transition-all ${isOpen
+              ? 'btn-pink shadow-pink-lg hover:shadow-pink'
+              : 'bg-frapatea-surface text-frapatea-subtle cursor-not-allowed border border-frapatea-border'
+            }`}
         >
-          Proceed to Checkout →
+          {isOpen ? 'Proceed to Checkout →' : 'Store Currently Closed'}
         </button>
+        {!isOpen && (
+          <p className="text-xs text-center text-frapatea-pink mt-3 font-inter">
+            We are currently closed. Please come back during our business hours!
+          </p>
+        )}
       </div>
     </div>
   );

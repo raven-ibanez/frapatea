@@ -74,4 +74,6 @@ export interface SiteSettings {
   site_description: string;
   currency: string;
   currency_code: string;
+  opening_time: string;
+  closing_time: string;
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Save, Upload, X } from 'lucide-react';
+import { Save, Upload, X, Clock } from 'lucide-react';
 import { useSiteSettings } from '../hooks/useSiteSettings';
 import { useImageUpload } from '../hooks/useImageUpload';
 
@@ -11,7 +11,9 @@ const SiteSettingsManager: React.FC = () => {
     site_name: '',
     site_description: '',
     currency: '',
-    currency_code: ''
+    currency_code: '',
+    opening_time: '',
+    closing_time: ''
   });
   const [logoFile, setLogoFile] = useState<File | null>(null);
   const [logoPreview, setLogoPreview] = useState<string>('');
@@ -22,7 +24,9 @@ const SiteSettingsManager: React.FC = () => {
         site_name: siteSettings.site_name,
         site_description: siteSettings.site_description,
         currency: siteSettings.currency,
-        currency_code: siteSettings.currency_code
+        currency_code: siteSettings.currency_code,
+        opening_time: siteSettings.opening_time,
+        closing_time: siteSettings.closing_time
       });
       setLogoPreview(siteSettings.site_logo);
     }
@@ -51,7 +55,7 @@ const SiteSettingsManager: React.FC = () => {
   const handleSave = async () => {
     try {
       let logoUrl = logoPreview;
-      
+
       // Upload new logo if selected
       if (logoFile) {
         const uploadedUrl = await uploadImage(logoFile, 'site-logo');
@@ -64,6 +68,8 @@ const SiteSettingsManager: React.FC = () => {
         site_description: formData.site_description,
         currency: formData.currency,
         currency_code: formData.currency_code,
+        opening_time: formData.opening_time,
+        closing_time: formData.closing_time,
         site_logo: logoUrl
       });
 
@@ -80,12 +86,26 @@ const SiteSettingsManager: React.FC = () => {
         site_name: siteSettings.site_name,
         site_description: siteSettings.site_description,
         currency: siteSettings.currency,
-        currency_code: siteSettings.currency_code
+        currency_code: siteSettings.currency_code,
+        opening_time: siteSettings.opening_time,
+        closing_time: siteSettings.closing_time
       });
       setLogoPreview(siteSettings.site_logo);
     }
     setIsEditing(false);
     setLogoFile(null);
+  };
+
+  /** Format HH:MM (24h) to a human-readable 12h string e.g. "8:00 AM" */
+  const formatTime = (time: string) => {
+    if (!time) return '—';
+    const [hourStr, minStr] = time.split(':');
+    let hour = parseInt(hourStr, 10);
+    const min = minStr || '00';
+    const period = hour >= 12 ? 'PM' : 'AM';
+    if (hour === 0) hour = 12;
+    else if (hour > 12) hour -= 12;
+    return `${hour}:${min} ${period}`;
   };
 
   if (loading) {
@@ -249,6 +269,82 @@ const SiteSettingsManager: React.FC = () => {
               <p className="text-lg font-medium text-black">{siteSettings?.currency_code}</p>
             )}
           </div>
+        </div>
+
+        {/* Business Hours */}
+        <div className="border-t border-gray-100 pt-6">
+          <div className="flex items-center space-x-2 mb-4">
+            <Clock className="h-5 w-5 text-red-600" />
+            <h3 className="text-lg font-medium text-black">Business Hours</h3>
+          </div>
+          <p className="text-sm text-gray-500 mb-4">
+            Set your daily opening and closing times. These will be shown to customers on the website.
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Opening Time
+              </label>
+              {isEditing ? (
+                <input
+                  type="time"
+                  name="opening_time"
+                  value={formData.opening_time}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
+                />
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <span className="text-lg font-medium text-black">
+                    {formatTime(siteSettings?.opening_time || '')}
+                  </span>
+                </div>
+              )}
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Closing Time
+              </label>
+              {isEditing ? (
+                <input
+                  type="time"
+                  name="closing_time"
+                  value={formData.closing_time}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-red-500 text-gray-900"
+                />
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <span className="text-lg font-medium text-black">
+                    {formatTime(siteSettings?.closing_time || '')}
+                  </span>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Live preview of the Open/Closed status */}
+          {!isEditing && siteSettings && (
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg flex items-center space-x-3">
+              <span className="text-sm text-gray-600">Current status:</span>
+              {(() => {
+                const now = new Date();
+                const [openH, openM] = (siteSettings.opening_time || '08:00').split(':').map(Number);
+                const [closeH, closeM] = (siteSettings.closing_time || '21:00').split(':').map(Number);
+                const openMins = openH * 60 + openM;
+                const closeMins = closeH * 60 + closeM;
+                const nowMins = now.getHours() * 60 + now.getMinutes();
+                const isOpen = nowMins >= openMins && nowMins < closeMins;
+                return (
+                  <span className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${isOpen ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                    }`}>
+                    <span className={`w-2 h-2 rounded-full mr-2 ${isOpen ? 'bg-green-500' : 'bg-red-500'}`} />
+                    {isOpen ? 'Open Now' : 'Closed'}
+                  </span>
+                );
+              })()}
+            </div>
+          )}
         </div>
       </div>
     </div>

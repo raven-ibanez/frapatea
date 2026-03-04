@@ -7,9 +7,10 @@ interface MenuItemCardProps {
   onAddToCart: (item: MenuItem, quantity?: number, variation?: Variation, addOns?: AddOn[]) => void;
   quantity: number;
   onUpdateQuantity: (id: string, quantity: number) => void;
+  isOpen: boolean;
 }
 
-const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart, quantity, onUpdateQuantity }) => {
+const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart, quantity, onUpdateQuantity, isOpen }) => {
   const [showCustomization, setShowCustomization] = useState(false);
   const [selectedVariation, setSelectedVariation] = useState<Variation | undefined>(item.variations?.[0]);
   const [selectedAddOns, setSelectedAddOns] = useState<(AddOn & { quantity: number })[]>([]);
@@ -165,6 +166,13 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart, quantity
               >
                 Unavailable
               </button>
+            ) : !isOpen ? (
+              <button
+                disabled
+                className="bg-frapatea-surface text-frapatea-subtle px-4 py-2 rounded-xl cursor-not-allowed text-sm font-medium border border-frapatea-border"
+              >
+                Store Closed
+              </button>
             ) : quantity === 0 ? (
               <button
                 onClick={handleAddToCart}
@@ -230,8 +238,8 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart, quantity
                       <label
                         key={variation.id}
                         className={`flex items-center justify-between p-3.5 border-2 rounded-xl cursor-pointer transition-all duration-200 ${selectedVariation?.id === variation.id
-                            ? 'border-frapatea-pink bg-frapatea-pink/10'
-                            : 'border-frapatea-border hover:border-frapatea-pink/40 bg-frapatea-surface'
+                          ? 'border-frapatea-pink bg-frapatea-pink/10'
+                          : 'border-frapatea-border hover:border-frapatea-pink/40 bg-frapatea-surface'
                           }`}
                       >
                         <div className="flex items-center gap-3">
@@ -329,10 +337,14 @@ const MenuItemCard: React.FC<MenuItemCardProps> = ({ item, onAddToCart, quantity
 
               <button
                 onClick={handleCustomizedAddToCart}
-                className="w-full btn-pink py-4 rounded-xl font-outfit font-bold flex items-center justify-center gap-2 shadow-pink-lg text-base"
+                disabled={!isOpen}
+                className={`w-full py-4 rounded-xl font-outfit font-bold flex items-center justify-center gap-2 text-base ${isOpen
+                    ? 'btn-pink shadow-pink-lg'
+                    : 'bg-frapatea-surface text-frapatea-subtle cursor-not-allowed border border-frapatea-border'
+                  }`}
               >
                 <ShoppingCart className="h-5 w-5" />
-                <span>Add to Cart — ₱{calculatePrice().toFixed(2)}</span>
+                <span>{isOpen ? `Add to Cart — ₱${calculatePrice().toFixed(2)}` : 'Store Currently Closed'}</span>
               </button>
             </div>
           </div>

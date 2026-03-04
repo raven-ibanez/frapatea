@@ -1,6 +1,7 @@
 import React from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { useSiteSettings } from '../hooks/useSiteSettings';
+import { checkIsOpen, formatTime } from '../utils/businessHours';
 
 interface HeaderProps {
   cartItemsCount: number;
@@ -10,6 +11,10 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClick }) => {
   const { siteSettings, loading } = useSiteSettings();
+
+  const openingTime = siteSettings?.opening_time || '08:00';
+  const closingTime = siteSettings?.closing_time || '21:00';
+  const isOpen = !loading && checkIsOpen(openingTime, closingTime);
 
   return (
     <header className="sticky top-0 z-50 bg-frapatea-dark/95 backdrop-blur-md border-b border-frapatea-border shadow-dark">
@@ -44,6 +49,26 @@ const Header: React.FC<HeaderProps> = ({ cartItemsCount, onCartClick, onMenuClic
               </span>
             </div>
           </button>
+
+          {/* Center: Open / Closed status pill */}
+          {!loading && siteSettings && (
+            <div className="hidden sm:flex flex-col items-center">
+              <span
+                className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold tracking-wide ${isOpen
+                    ? 'bg-green-500/15 text-green-400 ring-1 ring-green-500/30'
+                    : 'bg-red-500/15 text-red-400 ring-1 ring-red-500/30'
+                  }`}
+              >
+                <span className={`w-1.5 h-1.5 rounded-full ${isOpen ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`} />
+                {isOpen ? 'Open Now' : 'Closed'}
+              </span>
+              <span className="text-xs text-frapatea-muted mt-0.5">
+                {isOpen
+                  ? `Closes at ${formatTime(closingTime)}`
+                  : `Opens at ${formatTime(openingTime)}`}
+              </span>
+            </div>
+          )}
 
           {/* Cart Button */}
           <button

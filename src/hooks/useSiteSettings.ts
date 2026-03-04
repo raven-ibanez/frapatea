@@ -25,7 +25,9 @@ export const useSiteSettings = () => {
         site_logo: data.find(s => s.id === 'site_logo')?.value || '',
         site_description: data.find(s => s.id === 'site_description')?.value || '',
         currency: data.find(s => s.id === 'currency')?.value || 'PHP',
-        currency_code: data.find(s => s.id === 'currency_code')?.value || 'PHP'
+        currency_code: data.find(s => s.id === 'currency_code')?.value || 'PHP',
+        opening_time: data.find(s => s.id === 'opening_time')?.value || '08:00',
+        closing_time: data.find(s => s.id === 'closing_time')?.value || '21:00'
       };
 
       setSiteSettings(settings);
@@ -69,7 +71,7 @@ export const useSiteSettings = () => {
       );
 
       const results = await Promise.all(updatePromises);
-      
+
       // Check for errors
       const errors = results.filter(result => result.error);
       if (errors.length > 0) {

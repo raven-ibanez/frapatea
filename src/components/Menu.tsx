@@ -18,9 +18,10 @@ interface MenuProps {
   addToCart: (item: MenuItem, quantity?: number, variation?: any, addOns?: any[]) => void;
   cartItems: CartItem[];
   updateQuantity: (id: string, quantity: number) => void;
+  isOpen: boolean;
 }
 
-const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuantity }) => {
+const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuantity, isOpen }) => {
   const { categories } = useCategories();
   const [activeCategory, setActiveCategory] = React.useState('classic-frappe');
 
@@ -112,6 +113,7 @@ const Menu: React.FC<MenuProps> = ({ menuItems, addToCart, cartItems, updateQuan
                       onAddToCart={addToCart}
                       quantity={cartItem?.quantity || 0}
                       onUpdateQuantity={updateQuantity}
+                      isOpen={isOpen}
                     />
                   );
                 })}

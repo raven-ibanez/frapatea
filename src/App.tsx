@@ -9,10 +9,13 @@ import Checkout from './components/Checkout';
 import FloatingCartButton from './components/FloatingCartButton';
 import AdminDashboard from './components/AdminDashboard';
 import { useMenu } from './hooks/useMenu';
+import { useSiteSettings } from './hooks/useSiteSettings';
+import { checkIsOpen } from './utils/businessHours';
 
 function MainApp() {
   const cart = useCart();
   const { menuItems } = useMenu();
+  const { siteSettings, loading } = useSiteSettings();
   const [currentView, setCurrentView] = React.useState<'menu' | 'cart' | 'checkout'>('menu');
   const [selectedCategory, setSelectedCategory] = React.useState<string>('all');
 
@@ -23,6 +26,11 @@ function MainApp() {
   const handleCategoryClick = (categoryId: string) => {
     setSelectedCategory(categoryId);
   };
+
+  const isOpen = !loading && checkIsOpen(
+    siteSettings?.opening_time || '08:00',
+    siteSettings?.closing_time || '21:00'
+  );
 
   const filteredMenuItems = selectedCategory === 'all'
     ? menuItems
@@ -43,6 +51,7 @@ function MainApp() {
           addToCart={cart.addToCart}
           cartItems={cart.cartItems}
           updateQuantity={cart.updateQuantity}
+          isOpen={isOpen}
         />
       )}
 
@@ -55,6 +64,7 @@ function MainApp() {
           getTotalPrice={cart.getTotalPrice}
           onContinueShopping={() => handleViewChange('menu')}
           onCheckout={() => handleViewChange('checkout')}
+          isOpen={isOpen}
         />
       )}
 
@@ -63,6 +73,7 @@ function MainApp() {
           cartItems={cart.cartItems}
           totalPrice={cart.getTotalPrice()}
           onBack={() => handleViewChange('cart')}
+          isOpen={isOpen}
         />
       )}
 
